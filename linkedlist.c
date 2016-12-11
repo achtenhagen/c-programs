@@ -4,7 +4,7 @@
 
 #define LINE_LENGTH 1024
 
-struct clip* append();
+struct clip *append();
 struct clip *build_a_lst();
 int find_length();
 char *replace();
@@ -66,10 +66,9 @@ void split_line(char **fields, char *line) {
     while((fields[++i] = strtok(NULL, delim)));
 }
 
-struct clip* append(struct clip** headRef, char **fields) {
+struct clip* append(struct clip **headRef, char **fields) {
     struct clip* current = *headRef;
-    struct clip* newNode;
-    newNode = malloc(sizeof(struct clip));
+    struct clip* newNode = malloc(sizeof(struct clip));
     newNode->views = atoi(fields[1]);
     char* usr = malloc(strlen(fields[0]));
     strcpy(usr, fields[0]);
@@ -93,7 +92,7 @@ struct clip* append(struct clip** headRef, char **fields) {
 void print_lst(struct clip *hp) {
     struct clip *cp = hp;
     while (cp != NULL) {
-        printf("%d, %s, %s, %s\n",cp->views, cp->user, cp->id, cp->title);
+        printf("%d, %s, %s, %s\n", cp->views, cp->user, cp->id, cp->title);
         cp = cp->next;
     }
 }
