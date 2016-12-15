@@ -42,25 +42,22 @@ int main(int argc, char *argv[]) {
 	stime = MPI_Wtime();
 	sidx = pid * size;
 	eidx = sidx + size - 1;
+	
+	MPI_Scatter(vector_x, size, MPI_INT, vector_x + sidx, size, MPI_INT, MASTER, world);
+	MPI_Scatter(vector_y, size, MPI_INT, vector_y + sidx, size, MPI_INT, MASTER, world);
+	
 	prod = dot_product(sidx, eidx, vector_x, vector_y);
 	etime = MPI_Wtime();
-	// Program will hang if Master tries to receive from itself
-	// If Master = 0, start with i = 1
-	if (pid == MASTER) {
-		for (i = 1; i < nprocs; i++) {
-			MPI_Recv(&tmp_prod, 1, MPI_INT, i, 123, world, &status);
-			lst_prod[i] = tmp_prod;
-		}
-	} else {
-		MPI_Send(&prod, 1, MPI_INT, MASTER, 123, world);
-	}
+		
+	MPI_Gather(&prod, 1, MPI_INT, lst_prod, 1, MPI_INT, MASTER, world);
+	
 	if (pid == MASTER) {
 		for (i = 0; i < nprocs; i++) {
-			prod += lst_prod[i];
+			prod = lst_prod[i] + prod;
 		}
-		printf("pid=%d: final prod=%d\n", pid, prod);
-		printf("pid=%d: elapsed=%f\n", pid, etime-stime);
 	}
+	printf("pid=%d: final prod=%d\n", pid, prod);
+	printf("pid=%d: elapsed=%f\n", pid, etime-stime);
 	MPI_Finalize();
 }
 
