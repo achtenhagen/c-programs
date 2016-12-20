@@ -54,7 +54,7 @@ struct node *start, *goal;
 struct node *initialize(), *expand(), *merge(), *filter(), *move(), *prepend(), *append();
 struct node *insert_node(), *check_list(), *goal_found();
 
-int main (int argc, char **argv) {
+int main(int argc, char *argv[]) {
     int iter, cnt = 0, total = 1, ocnt = 0, ccnt = 0;
     int perm;
     struct node *cp, *open, *closed, *succ, *tp;
@@ -181,7 +181,7 @@ struct node *append (struct node *tp, struct node *sp) {
 }
 
 // Done.
-void swap (struct node *cp, int i, int j, int k, int l) {
+void swap(struct node *cp, int i, int j, int k, int l) {
     int tmp = cp->board[i][j];
     cp->board[i][j] = cp->board[k][l];
     cp->board[k][l] = tmp;

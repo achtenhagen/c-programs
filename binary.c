@@ -1,7 +1,8 @@
+
 #include <stdlib.h>
 #include <stdio.h>
 
-int main (int argc, char **argv) {
+int main (int argc, char *argv[]) {
     float f;
     char s[32]; int n=32;
     long x = *(unsigned long *)(&f);

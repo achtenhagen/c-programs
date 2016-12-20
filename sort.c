@@ -1,3 +1,4 @@
+
 /* HW6 read cafefully and follow all the instructions/comments
    this program compiles and runs as is although it's not doing much.
    DO NOT CHANGE THE SEED. Changing seed gives a different sequence of
@@ -45,7 +46,7 @@ void sort();
 
 int n, lst[N], tmp[N];
 
-int main(int argc, char **argv) {
+int main(int argc, char *argv[]) {
     long int del_sec, del_msec;
     struct timeval tv_s, tv_e;
     if (argc > 1) {

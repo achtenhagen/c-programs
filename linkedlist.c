@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,7 +20,7 @@ struct clip {
     struct clip *next;
 } *head;
 
-int main(int argc, char **argv) {
+int main(int argc, char *argv[]) {
     if (argc == 0) {
         fprintf(stderr, "usage %s file", argv[0]);
         exit(0);
@@ -35,7 +36,10 @@ int main(int argc, char **argv) {
 int find_length(struct clip *hp) {
     int count = 0;
     struct clip *cp = hp;
-    while (cp != NULL) { count++; cp = cp->next; }
+    while (cp) {
+        count++;
+        cp = cp->next;
+    }
     return count;
 }
 
@@ -49,7 +53,7 @@ struct clip *build_a_lst(char *fn) {
         exit(-1);
     }
     fp = fopen(fn, "r");
-    while ((fgets(line, sizeof(line), fp))) {
+    while (fgets(line, sizeof(line), fp)) {
         line[strlen(line) - 1] = '\0';
         split_line(&fields, line);
         append(&hp, fields);
@@ -84,14 +88,14 @@ struct clip* append(struct clip **headRef, char **fields) {
         *headRef = newNode;
         return *headRef;
     }
-    while (current->next != NULL) { current = current->next; }
+    while (current->next) { current = current->next; }
     current->next = newNode;
     return *headRef;
 }
 
 void print_lst(struct clip *hp) {
     struct clip *cp = hp;
-    while (cp != NULL) {
+    while (cp) {
         printf("%d, %s, %s, %s\n", cp->views, cp->user, cp->id, cp->title);
         cp = cp->next;
     }

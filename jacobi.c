@@ -1,9 +1,9 @@
+
 /*
-   CS288 HOMEWORK 8
-   Your program will take in two command-line parameters: n and error
+   Program takes in two command-line parameters: n and error
    command: jacobi 5 0.0001
    command: jacobi 10 0.000001
- */
+*/
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -27,24 +27,13 @@ float x[N], b[N], C[N], buf[N];
 int n;
 float error;
 
-void print_matrix(float m[N][N]) {
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            printf("%f  ", m[i][j]);
-        }
-        printf("\n");
-    }
-    printf("\n");
-}
-
 int main(int argc, char *argv[]) {
     int n_iter;
     n = atoi(argv[1]); // Problem size
-    error = atof(argv[2]); // Error value    
-
-    init(); /* initalize a, x0 and b - DO not change */
+    error = atof(argv[2]); // Error value
+    init();
     // Ax = b, A = D + R
-    // Find D - Replace everything but numbers along diagonal with 0
+    // Find D : Replace everything but numbers along diagonal with 0
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             if (j == i) {
@@ -54,7 +43,7 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-    // Find R - Replace all numbers along diagonal with 0
+    // Find R : Replace all numbers along diagonal with 0
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             if (j != i) {
@@ -64,17 +53,17 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-    // Find DI - Replace numbers along the diagonal with their reciprocal
+    // Find DI : Replace numbers along the diagonal with their reciprocal
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            if (i==j){
+            if (i == j) {
                 DI[i][j] = 1 / D[i][j];
             } else {
                 DI[i][j] = 0;
             }
         }
     }
-    // Find T - Multiply -DI by R
+    // Find T : Multiply -DI by R
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             for (int k = 0; k < n; k++) {
@@ -82,7 +71,7 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-    // Find C - Multiply DI by b
+    // Find C : Multiply DI by b
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             C[i] += DI[i][j] * b[j];
@@ -92,6 +81,8 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
+// Each iteration multiples Tx+C
+// Where x is the previous estimate
 int jacobi() {
     int i,j,k;
     float sum;
@@ -117,11 +108,12 @@ int jacobi() {
     return k;
 }
 
+// Multiply A by x
+// Check if Ax-b is close to 0 or within error
 int convergence(int iter) {
     int i,j,k,flag = 1;
     float y[N];
-    for (int i = 0; i < N; i++) y[i] = 0;
-    // Multiply A by x
+    for (int i = 0; i < N; i++) { y[i] = 0; }
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             y[i] += A[i][j] * x[j];
@@ -130,6 +122,7 @@ int convergence(int iter) {
     return ((fabsf(y[0] - b[0]) < error) && (fabsf(y[1] - b[1]) < error));
 }
 
+// initalize A, x0 and b
 void init() {
     int i,j,k,flag=0;
     float sum;
@@ -166,13 +159,22 @@ void init() {
 }
 
 void print_equation() {
-    int i,j;
     printf("A*x=b\n");
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n; j++) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
             printf("%2d ", (int)(A[i][j]));
         }
         printf(" * x%d = %d\n", i, (int)(b[i]));
+    }
+    printf("\n");
+}
+
+void print_matrix(float m[N][N]) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            printf("%f  ", m[i][j]);
+        }
+        printf("\n");
     }
     printf("\n");
 }
